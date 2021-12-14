@@ -1,9 +1,14 @@
+// Đề bài: Có file dữ liệu Profile-5.txt, sắp xếp lại danh sách bằng thuật toán MergeSort
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
 
+//
 int n,*year,*month,*date,*rank;
 char **surname,**midname,**name;
+
+//Hàm so sánh trả về 1 0
+// Sắp xếp theo thứ tự ưu tên: Tên -> Tên đệm -> Họ -> Năm sinh -> Tháng sinh -> Ngày sinh
 
 int compareRank(int a,int b){
     if(strcmp(name[a],name[b])<0) return 1;
@@ -21,19 +26,27 @@ int compareRank(int a,int b){
     return 1;
 }
 
+// Hàm merge 2 mảng lại sau khi chia ra (Thuật toán MergeSort)
+// Nhận vào mảng arr, với l là phần tử đầu mảng, m là phần tử giữa mảng, r là phần tử cuối mảng
 void merge(int arr[], int l, int m, int r)
 {
-    int i,j,k;
-    int n1 = m - l + 1;
-    int n2 = r - m;
-    int L[n1], R[n2];
+    int i,j,k; // Biến sử dụng trong vòng for
+    int n1 = m - l + 1; // Số phần tử từ l đến m
+    int n2 = r - m; // Số phần tử từ m đến r
+
+    // Tách ra 2 mảng mới từ mảng arr cũ lấy phần tử m là phần tử ranh giới
+    int L[n1], R[n2]; 
     for (i = 0; i < n1; i++)
         L[i] = arr[l + i];
     for (j = 0; j < n2; j++)
         R[j] = arr[m + 1 + j];
+
     i = 0;
     j = 0;
-    k = l;
+    k = l; // k = chỉ số phần tử đầu mảng arr
+
+
+// Sort với 3 vòng while
     while (i < n1 && j < n2) {
         if (compareRank(L[i],R[j])) {
             arr[k] = L[i];
@@ -45,11 +58,13 @@ void merge(int arr[], int l, int m, int r)
         }
         k++;
     }
+
     while (i < n1) {
         arr[k] = L[i];
         i++;
         k++;
     }
+
     while (j < n2) {
         arr[k] = R[j];
         j++;
@@ -67,6 +82,7 @@ void mergeSort(int arr[], int l, int r)
     }
 }
 
+//
 int getN(char filename[]){
     char* start=strchr(filename,'-')+1;
     int count=strchr(filename,'.')-start;
@@ -76,6 +92,7 @@ int getN(char filename[]){
     return atoi(N);
 }
 
+// Tạo mảng động
 void initArr(){
     surname=malloc(n*sizeof(char*));
     midname=malloc(n*sizeof(char*));
@@ -92,6 +109,7 @@ void initArr(){
     }
 }
 
+//Giải phóng mảng động
 void freeArr(){
     for (int i=0;i<n;i++) {
         free(surname[i]);
@@ -107,6 +125,7 @@ void freeArr(){
     free(rank);
 }
 
+// Đọc dữ liệu từ file
 int loadFile(char filename[]){
     FILE *f=fopen(filename,"r");
     if (f==NULL) return 1;
@@ -118,6 +137,7 @@ int loadFile(char filename[]){
     return 0;
 }
 
+//Ghi lại vào file
 void printFile(char filename[]){
     char outfile[50]="sorted-";
     strcat(outfile,filename);
@@ -129,6 +149,7 @@ void printFile(char filename[]){
     fclose(f);
 }
 
+//Hàm main chạy file bằng cú pháp ./tên file Profile-5.txt
 int main(int argc, char *argv[]){
     n=getN(argv[1]);
     initArr();
