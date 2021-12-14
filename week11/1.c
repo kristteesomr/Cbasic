@@ -85,7 +85,7 @@ void inTTDS(NV ds[]){
 }
 void docFile(NV *ds){
 	int i;
-	FILE *f = fopen("profile-n.txt", "r");
+	FILE *f = fopen("profile-5.txt", "r");
 	for(i = 0; i < 6; i++){
 		fscanf(f, "%s %s %s\n%d-%d-%d\n", &ds[i].ho, &ds[i].dem, &ds[i].ten, 
 		&ds[i].nam, &ds[i].ngay, &ds[i].thang);
